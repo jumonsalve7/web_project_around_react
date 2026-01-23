@@ -1,16 +1,108 @@
 import Header from "./components/Header/header";
 import Footer from "./components/Footer/footer";
 import Main from "./components/Main/Main";
-import Cards from "./components/Cards/Cards";
+import { api } from "./utils/Api";
+import CurrentUserContext from "./Context/CurrentUserContext";
+import { useEffect, useState } from "react";
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      await api.getUserInfo().then((data) => {
+        setCurrentUser(data);
+      });
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await api.getInitialCards().then((data) => {
+        setCards(data);
+      });
+    })();
+  }, []);
+
+  const [popup, setPopup] = useState(null);
+  const [cards, setCards] = useState([]);
+
+  function handleOpenPopup(popup) {
+    setPopup(popup);
+  }
+
+  function handleClosePopup() {
+    setPopup(null);
+  }
+
+  const handleUpdateUser = (data) => {
+    (async () => {
+      await api
+        .setUserInfo(data)
+        .then((newData) => {
+          setCurrentUser(newData);
+          handleClosePopup();
+        })
+        .catch((error) => console.error(error));
+    })();
+  };
+  const handleAddPlaceSubmit = (card) => {
+    (async () => {
+      await api.createCard(card).then((data) => {
+        setCards([data, ...cards]);
+        handleClosePopup();
+      });
+    })();
+  };
+
+  const onAvatarUpdate = (avatar) => {
+    (async () => {
+      await api.editPhoto(avatar).then((newData) => {
+        setCurrentUser(newData);
+        handleClosePopup();
+      });
+    })();
+  };
+
+ async function handleCardLike(card) {
+  try {
+    await api.toggleLikeCard(card.isLiked, card._id);
+
+    setCards((state) =>
+      state.map((currentCard) =>
+        currentCard._id === card._id
+          ? { ...currentCard, isLiked: !currentCard.isLiked }
+          : currentCard
+      )
+    );
+  } catch (error) {
+    console.error("Error al actualizar el like:", error);
+  }
+}
+
+  async function handleCardDelete(id) {
+    api.deleteCard(id);
+
+    await setCards((state) =>
+      state.filter((currentCard) => currentCard._id !== id),
+    );
+  }
   return (
     <>
-      <Header></Header>
-      <Main></Main>
-      <Cards></Cards>
-
-      <Footer></Footer>
+      <CurrentUserContext.Provider value={{ currentUser,handleUpdateUser,onAvatarUpdate,handleAddPlaceSubmit}}>
+        <Header></Header>
+        <Main
+          onOpenPopup={handleOpenPopup}
+          onClosePopup={handleClosePopup}
+          popup={popup}
+          cards={cards}
+          handleOpenPopup={handleOpenPopup}
+          handleClosePopup={handleClosePopup}
+          handleCardLike={handleCardLike}
+          handleCardDelete={handleCardDelete}
+        ></Main>
+        <Footer></Footer>
+      </CurrentUserContext.Provider>
     </>
   );
 }

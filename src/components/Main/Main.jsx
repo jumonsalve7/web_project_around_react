@@ -1,15 +1,17 @@
-import { useState } from "react";
-import NewCard from "../Form/NewCard/NewCard";
+import { useState, useEffect, useContext } from "react";
+import EditProfile from "../Form/EditProfile/EditProfile";
 import novoa from "../../assets/images/novoa.jpg";
 import edit from "../../assets/images/edit.png";
 import pencil from "../../assets/images/pencil.png";
 import add from "../../assets/images/add.png";
 import Popup from "./components/Popup/Popup";
-import EditProfile from "../Form/EditProfile/EditProfile";
 import EditAvatar from "../Form/EditAvatar/EditAvatar";
+import { api } from "../../utils/Api";
+import CurrentUserContext from "../../Context/CurrentUserContext";
+import Card from "../Card/Card";
+import NewCard from "../Form/NewCard/NewCard";
 
-export default function Main() {
-  const [popup, setPopup] = useState(null);
+export default function Main(props) {
 
   const editAvatar = { title: "New Photo", children: <EditAvatar /> };
 
@@ -17,20 +19,21 @@ export default function Main() {
 
   const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
 
-  function handleOpenPopup(popup) {
-    setPopup(popup);
-  }
-
-  function handleClosePopup() {
-    setPopup(null);
-  }
-
+  const { currentUser } = useContext(CurrentUserContext);
+  const {
+    cards,
+    popup,
+    handleOpenPopup,
+    handleClosePopup,
+    handleCardDelete,
+    handleCardLike,
+  } = props;
   return (
     <main className="content">
       <section className="profile">
         <div className="profile__edit-photo">
           <img
-            src={novoa}
+            src={currentUser.avatar}
             alt="profile picture of user"
             className="profile__avatar"
           />
@@ -45,8 +48,8 @@ export default function Main() {
         </div>
 
         <div className="profile__container">
-          <h2 className="profile__name">JUAN PABLO</h2>
-          <h3 className="profile__profession"> Explorador </h3>
+          <h2 className="profile__name">{currentUser.name}</h2>
+          <h3 className="profile__profession"> {currentUser.about}</h3>
         </div>
         <button type="button" className="profile__edit-button">
           <img
@@ -55,6 +58,7 @@ export default function Main() {
             className="profile__edit-image"
             onClick={() => {
               handleOpenPopup(newProfilePopup);
+
             }}
           />
         </button>
@@ -68,13 +72,25 @@ export default function Main() {
             }}
           />
         </button>
+        </section>
+        <section className="cards">
+          <div className="cards__list">
+            {cards.map((card) => (
+              <Card
+                key={card._id}
+                card={card}
+                handleCardDelete={handleCardDelete}
+                handleCardLike={handleCardLike}
+              />
+            ))}
+          </div>
 
-        {popup && (
-          <Popup onClose={handleClosePopup} title={popup.title}>
-            {popup.children}
-          </Popup>
-        )}
       </section>
+      {popup && (
+        <Popup onClose={handleClosePopup} title={popup.title}>
+          {popup.children}
+        </Popup>
+      )}
     </main>
   );
 }
