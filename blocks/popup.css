@@ -55,6 +55,7 @@
 .popup-active {
   display: flex;
   background-color: rgba(0, 0, 0, 0.7);
+  max-width: 700px;
 }
 
 .popup__close {
