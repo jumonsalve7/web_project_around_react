@@ -9,6 +9,7 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 import Card from "../Card/Card";
 import NewCard from "../Form/NewCard/NewCard";
 import ImagePopup from "./components/imagePopup";
+import "./App.css";
 
 export default function Main(props) {
   const { currentUser } = useContext(CurrentUserContext);
