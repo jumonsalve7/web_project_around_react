@@ -59,6 +59,7 @@
 }
 
 .popup__close {
+  
   border: none;
   cursor: pointer;
   width: 40px;
