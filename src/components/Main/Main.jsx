@@ -1,11 +1,11 @@
-import {useContext } from "react";
+import { useContext } from "react";
 import EditProfile from "../Form/EditProfile/EditProfile";
 import edit from "../../assets/images/edit.png";
 import pencil from "../../assets/images/pencil.png";
 import add from "../../assets/images/add.png";
 import Popup from "./components/Popup/Popup";
 import EditAvatar from "../Form/EditAvatar/EditAvatar";
-import CurrentUserContext from "../../Context/CurrentUserContext";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 import Card from "../Card/Card";
 import NewCard from "../Form/NewCard/NewCard";
 

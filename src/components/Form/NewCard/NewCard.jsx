@@ -1,26 +1,29 @@
 import close from "../../../assets/images/close.png";
 import { useContext, useState } from "react";
-import CurrentUserContext from "../../../Context/CurrentUserContext";
-
+import CurrentUserContext from "../../../contexts/CurrentUserContext";
 
 export default function NewCard({ handleClosePopup }) {
   const { handleAddPlaceSubmit } = useContext(CurrentUserContext);
 
-  const [name, setName] = useState('');
-  const [link, setLink] = useState('');
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     handleAddPlaceSubmit({ name, link });
-    setName('');
-    setLink('');
-    handleClosePopup(); 
+    setName("");
+    setLink("");
+    handleClosePopup();
   };
 
   return (
     <div className="formadd__container">
-      <button type="button" className="formadd__close" onClick={handleClosePopup}>
+      <button
+        type="button"
+        className="formadd__close"
+        onClick={handleClosePopup}
+      >
         <img src={close} alt="close icon" />
       </button>
       <form className="formadd__group" onSubmit={handleSubmit} noValidate>

@@ -2,12 +2,12 @@ import Header from "./components/Header/header";
 import Footer from "./components/Footer/footer";
 import Main from "./components/Main/Main";
 import { api } from "./utils/Api";
-import CurrentUserContext from "./Context/CurrentUserContext";
+import CurrentUserContext from "./contexts/CurrentUserContext";
 import { useEffect, useState } from "react";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState({});
-    const [popup, setPopup] = useState(null);
+  const [popup, setPopup] = useState(null);
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
@@ -25,8 +25,6 @@ export default function App() {
       });
     })();
   }, []);
-
-
 
   function handleOpenPopup(popup) {
     setPopup(popup);
@@ -56,31 +54,31 @@ export default function App() {
     })();
   };
 
- const onAvatarUpdate = async (avatar) => {
-  try {
-    const newData = await api.editPhoto(avatar); 
-    setCurrentUser(newData);
-    handleClosePopup();
-  } catch (error) {
-    console.error(error);
-  }
-};
+  const onAvatarUpdate = async (avatar) => {
+    try {
+      const newData = await api.editPhoto(avatar);
+      setCurrentUser(newData);
+      handleClosePopup();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
- async function handleCardLike(card) {
-  try {
-    await api.toggleLikeCard(card.isLiked, card._id);
+  async function handleCardLike(card) {
+    try {
+      await api.toggleLikeCard(card.isLiked, card._id);
 
-    setCards((state) =>
-      state.map((currentCard) =>
-        currentCard._id === card._id
-          ? { ...currentCard, isLiked: !currentCard.isLiked }
-          : currentCard
-      )
-    );
-  } catch (error) {
-    console.error("Error al actualizar el like:", error);
+      setCards((state) =>
+        state.map((currentCard) =>
+          currentCard._id === card._id
+            ? { ...currentCard, isLiked: !currentCard.isLiked }
+            : currentCard,
+        ),
+      );
+    } catch (error) {
+      console.error("Error al actualizar el like:", error);
+    }
   }
-}
 
   async function handleCardDelete(id) {
     api.deleteCard(id);
@@ -91,7 +89,14 @@ export default function App() {
   }
   return (
     <>
-      <CurrentUserContext.Provider value={{ currentUser,handleUpdateUser,onAvatarUpdate,handleAddPlaceSubmit}}>
+      <CurrentUserContext.Provider
+        value={{
+          currentUser,
+          handleUpdateUser,
+          onAvatarUpdate,
+          handleAddPlaceSubmit,
+        }}
+      >
         <Header></Header>
         <Main
           onOpenPopup={handleOpenPopup}
