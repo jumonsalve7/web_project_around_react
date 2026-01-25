@@ -1,12 +1,13 @@
-const Card = ({ card, handleCardDelete, handleCardLike }) => {
-  const { _id, name, link, isLiked } = card;
+const Card = ({ card, handleCardDelete, handleCardLike, handleCardClick }) => {
+  const { _id, name, link } = card;
+
   return (
     <div className="cards__content">
       <img
         src={link}
         alt={name}
         className="cards__content-image"
-        onClick={() => setOpenImage(true)}
+        onClick={() => handleCardClick(card)}
       />
 
       <button
@@ -27,11 +28,6 @@ const Card = ({ card, handleCardDelete, handleCardLike }) => {
           onClick={() => handleCardLike(card)}
         ></button>
       </div>
-      {/* {openImage && (
-        <div onClick={() => setOpenImage(false)}>
-          <img src={link} alt={name} className="popup__image"/>
-        </div>
-      )} */}
     </div>
   );
 };

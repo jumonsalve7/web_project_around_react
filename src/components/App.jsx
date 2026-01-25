@@ -1,8 +1,8 @@
-import Header from "./components/Header/header";
-import Footer from "./components/Footer/footer";
-import Main from "./components/Main/Main";
-import { api } from "./utils/Api";
-import CurrentUserContext from "./contexts/CurrentUserContext";
+import Header from "./Header/header";
+import Footer from "./Footer/footer";
+import Main from "./Main/Main";
+import { api } from "../utils/Api";
+import CurrentUserContext from "../contexts/CurrentUserContext";
 import { useEffect, useState } from "react";
 
 export default function App() {

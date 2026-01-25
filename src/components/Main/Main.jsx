@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import EditProfile from "../Form/EditProfile/EditProfile";
 import edit from "../../assets/images/edit.png";
 import pencil from "../../assets/images/pencil.png";
@@ -8,6 +8,7 @@ import EditAvatar from "../Form/EditAvatar/EditAvatar";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import Card from "../Card/Card";
 import NewCard from "../Form/NewCard/NewCard";
+import ImagePopup from "./components/imagePopup";
 
 export default function Main(props) {
   const { currentUser } = useContext(CurrentUserContext);
@@ -35,6 +36,11 @@ export default function Main(props) {
     children: <NewCard handleClosePopup={handleClosePopup} />,
   };
 
+  const [selectedCard, setSelectedCard] = useState(null);
+
+  function handleCardClick(card) {
+    setSelectedCard(card);
+  }
   return (
     <main className="content">
       <section className="profile">
@@ -87,6 +93,7 @@ export default function Main(props) {
               card={card}
               handleCardDelete={handleCardDelete}
               handleCardLike={handleCardLike}
+              handleCardClick={handleCardClick} 
             />
           ))}
         </div>
@@ -95,6 +102,9 @@ export default function Main(props) {
         <Popup onClose={handleClosePopup} title={popup.title}>
           {popup.children}
         </Popup>
+      )}
+      {selectedCard && (
+        <ImagePopup card={selectedCard} onClose={() => setSelectedCard(null)} />
       )}
     </main>
   );
