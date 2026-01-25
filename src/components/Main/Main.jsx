@@ -1,24 +1,15 @@
-import { useState, useEffect, useContext } from "react";
+import {useContext } from "react";
 import EditProfile from "../Form/EditProfile/EditProfile";
-import novoa from "../../assets/images/novoa.jpg";
 import edit from "../../assets/images/edit.png";
 import pencil from "../../assets/images/pencil.png";
 import add from "../../assets/images/add.png";
 import Popup from "./components/Popup/Popup";
 import EditAvatar from "../Form/EditAvatar/EditAvatar";
-import { api } from "../../utils/Api";
 import CurrentUserContext from "../../Context/CurrentUserContext";
 import Card from "../Card/Card";
 import NewCard from "../Form/NewCard/NewCard";
 
 export default function Main(props) {
-
-  const editAvatar = { title: "New Photo", children: <EditAvatar /> };
-
-  const newProfilePopup = { title: "Name", children: <EditProfile /> };
-
-  const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
-
   const { currentUser } = useContext(CurrentUserContext);
   const {
     cards,
@@ -28,6 +19,22 @@ export default function Main(props) {
     handleCardDelete,
     handleCardLike,
   } = props;
+
+  const editAvatar = {
+    title: "New Photo",
+    children: <EditAvatar handleClosePopup={handleClosePopup} />,
+  };
+
+  const newProfilePopup = {
+    title: "Name",
+    children: <EditProfile handleClosePopup={handleClosePopup} />,
+  };
+
+  const newCardPopup = {
+    title: "New place",
+    children: <NewCard handleClosePopup={handleClosePopup} />,
+  };
+
   return (
     <main className="content">
       <section className="profile">
@@ -58,7 +65,6 @@ export default function Main(props) {
             className="profile__edit-image"
             onClick={() => {
               handleOpenPopup(newProfilePopup);
-
             }}
           />
         </button>
@@ -72,19 +78,18 @@ export default function Main(props) {
             }}
           />
         </button>
-        </section>
-        <section className="cards">
-          <div className="cards__list">
-            {cards.map((card) => (
-              <Card
-                key={card._id}
-                card={card}
-                handleCardDelete={handleCardDelete}
-                handleCardLike={handleCardLike}
-              />
-            ))}
-          </div>
-
+      </section>
+      <section className="cards">
+        <div className="cards__list">
+          {cards.map((card) => (
+            <Card
+              key={card._id}
+              card={card}
+              handleCardDelete={handleCardDelete}
+              handleCardLike={handleCardLike}
+            />
+          ))}
+        </div>
       </section>
       {popup && (
         <Popup onClose={handleClosePopup} title={popup.title}>

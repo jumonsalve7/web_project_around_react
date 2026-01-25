@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState({});
+    const [popup, setPopup] = useState(null);
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -24,8 +26,7 @@ export default function App() {
     })();
   }, []);
 
-  const [popup, setPopup] = useState(null);
-  const [cards, setCards] = useState([]);
+
 
   function handleOpenPopup(popup) {
     setPopup(popup);
@@ -38,7 +39,7 @@ export default function App() {
   const handleUpdateUser = (data) => {
     (async () => {
       await api
-        .setUserInfo(data)
+        .editProfile(data)
         .then((newData) => {
           setCurrentUser(newData);
           handleClosePopup();
@@ -55,14 +56,15 @@ export default function App() {
     })();
   };
 
-  const onAvatarUpdate = (avatar) => {
-    (async () => {
-      await api.editPhoto(avatar).then((newData) => {
-        setCurrentUser(newData);
-        handleClosePopup();
-      });
-    })();
-  };
+ const onAvatarUpdate = async (avatar) => {
+  try {
+    const newData = await api.editPhoto(avatar); 
+    setCurrentUser(newData);
+    handleClosePopup();
+  } catch (error) {
+    console.error(error);
+  }
+};
 
  async function handleCardLike(card) {
   try {

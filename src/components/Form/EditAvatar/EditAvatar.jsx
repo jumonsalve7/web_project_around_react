@@ -1,12 +1,25 @@
-import close from "../../../assets/images/close.png"
+import close from "../../../assets/images/close.png";
+import CurrentUserContext from "../../../Context/CurrentUserContext";
+import { useContext, useState } from "react";
 
-export default function EditAvatar() {
+export default function EditAvatar({ handleClosePopup }) {
+  const { onAvatarUpdate } = useContext(CurrentUserContext);
+
+  const [avatar, setAvatar] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onAvatarUpdate(avatar);
+    setAvatar("");
+    handleClosePopup();
+  };
+
   return (
     <div className="photo__container">
       <button type="button" className="photo__close">
         <img src={close} alt="close icon" />
       </button>
-      <form className="photo__group" novalidate>
+      <form className="photo__group" onSubmit={handleSubmit} noValidate>
         <h2 className="photo__title">New photo</h2>
         <span className="form__input-error inputTitle-error"></span>
         <input
@@ -15,6 +28,8 @@ export default function EditAvatar() {
           name="url"
           placeholder="Image URL"
           className="form__placeholder"
+          value={avatar}
+          onChange={(e) => setAvatar(e.target.value)}
           required
         />
         <span className="form__input-error inputUrl-error">

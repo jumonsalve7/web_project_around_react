@@ -2,29 +2,28 @@ import close from "../../../assets/images/close.png";
 import { useContext, useState } from "react";
 import CurrentUserContext from "../../../Context/CurrentUserContext";
 
-export default function NewCard() {
-  const userContext = useContext(CurrentUserContext);
-  const { handleAddPlaceSubmit } = userContext;
-  const { name, setName } = useState();
-  const { link, setLink } = useState();
+
+export default function NewCard({ handleClosePopup }) {
+  const { handleAddPlaceSubmit } = useContext(CurrentUserContext);
+
+  const [name, setName] = useState('');
+  const [link, setLink] = useState('');
+
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent the default form submit behavior
+    event.preventDefault();
 
-    handleAddPlaceSubmit({ name, link }); // Update the user info
-    console.log(name);
+    handleAddPlaceSubmit({ name, link });
+    setName('');
+    setLink('');
+    handleClosePopup(); 
   };
-
-  const setInput = (event) =>{
-    const input = event.target.value
-    setName(input)
-  }
 
   return (
     <div className="formadd__container">
-      <button type="button" className="formadd__close">
+      <button type="button" className="formadd__close" onClick={handleClosePopup}>
         <img src={close} alt="close icon" />
       </button>
-      <form className="formadd__group" onSubmit={handleSubmit} novalidate>
+      <form className="formadd__group" onSubmit={handleSubmit} noValidate>
         <h2 className="formadd__title">New place</h2>
         <input
           type="text"
@@ -32,13 +31,14 @@ export default function NewCard() {
           placeholder="Title"
           name="place"
           className="form__placeholder"
-          minlength="2"
-          maxlength="30"
+          minLength="2"
+          maxLength="30"
           value={name}
-          onChange={setInput}
+          onChange={(e) => setName(e.target.value)}
           required
         />
         <span className="form__input-error inputTitle-error"></span>
+
         <input
           type="url"
           id="inputUrl"
@@ -46,12 +46,13 @@ export default function NewCard() {
           placeholder="Image URL"
           className="form__placeholder"
           value={link}
-          onChange={() => setLink(value)}
+          onChange={(e) => setLink(e.target.value)}
           required
         />
         <span className="form__input-error inputUrl-error">
           Please enter a URL.
         </span>
+
         <button type="submit" className="form__submit">
           Save
         </button>
