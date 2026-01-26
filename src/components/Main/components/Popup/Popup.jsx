@@ -1,4 +1,5 @@
 import close from "../../../../assets/images/close.png";
+import "../../../../index.css";
 
 export default function Popup({ onClose, title, children }) {
   return (

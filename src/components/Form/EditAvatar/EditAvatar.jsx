@@ -1,6 +1,7 @@
 import close from "../../../assets/images/close.png";
 import CurrentUserContext from "../../../contexts/CurrentUserContext";
 import { useContext, useState } from "react";
+import "../../../index.css";
 
 export default function EditAvatar({ handleClosePopup }) {
   const { onAvatarUpdate } = useContext(CurrentUserContext);
