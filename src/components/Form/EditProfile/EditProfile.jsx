@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import close from "../../../assets/images/close.png";
 import CurrentUserContext from "../../../contexts/CurrentUserContext";
-import "../../../index.css";
+import "../../../App.css";
 
 
 export default function EditProfile({ handleClosePopup }) {

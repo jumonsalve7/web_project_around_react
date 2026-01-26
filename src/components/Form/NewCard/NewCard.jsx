@@ -1,7 +1,7 @@
 import close from "../../../assets/images/close.png";
 import { useContext, useState } from "react";
 import CurrentUserContext from "../../../contexts/CurrentUserContext";
-import "../../../index.css";
+import "../../../App.css";
 
 
 export default function NewCard({ handleClosePopup }) {
