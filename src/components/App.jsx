@@ -4,6 +4,7 @@ import Main from "./Main/Main";
 import { api } from "../utils/Api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import { useEffect, useState } from "react";
+import "../index.css";
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState({});
